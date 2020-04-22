@@ -8,6 +8,7 @@
     <FeatureView></FeatureView>
     <TabControl :titles="['流行', '新款', '精选']" class="tab-control"></TabControl>
 
+    <GoodsList :goods="goods['pop'].list"></GoodsList>
     <ul>
       <li>1</li>
       <li>2</li>
@@ -49,16 +50,6 @@
       <li>38</li>
       <li>39</li>
       <li>40</li>
-      <li>41</li>
-      <li>42</li>
-      <li>43</li>
-      <li>44</li>
-      <li>45</li>
-      <li>46</li>
-      <li>47</li>
-      <li>48</li>
-      <li>49</li>
-      <li>50</li>
     </ul>
 
     <h2>首页</h2>
@@ -68,18 +59,20 @@
 <script>
 import NavBar from "components/common/navbar/NavBar";
 import TabControl from "components/content/tabControl/TabControl";
+import GoodsList from "components/content/goods/GoodsList";
 
 import HomeSwiper from "./childComps/HomeSwiper";
 import RecommendView from "./childComps/RecommendView";
 import FeatureView from "./childComps/FeatureView";
 
-import { getHomeMultidata } from "network/home";
+import { getHomeMultidata, getHomeGoods } from "network/home";
 
 export default {
   name: "Home",
   components: {
     NavBar,
     TabControl,
+    GoodsList,
     HomeSwiper,
     RecommendView,
     FeatureView
@@ -87,16 +80,42 @@ export default {
   data() {
     return {
       banners: [],
-      recommends: []
+      recommends: [],
+      goods: {
+        pop: { page: 0, list: [] },
+        new: { page: 0, list: [] },
+        sell: { page: 0, list: [] }
+      }
     };
   },
   created() {
     // 1.请求多个数据
-    getHomeMultidata().then(res => {
-      console.log(res);
-      this.banners = res.data.banner.list;
-      this.recommends = res.data.recommend.list;
-    });
+    this.getHomeMultidata();
+
+    // 2.请求商品数据
+    this.getHomeGoods("pop");
+    this.getHomeGoods("new");
+    this.getHomeGoods("sell");
+  },
+  methods: {
+    // 1.请求多个数据
+    getHomeMultidata() {
+      getHomeMultidata().then(res => {
+        // console.log(res.data.banner.list.length);
+        // console.log(res.data.recommend.list.length);
+
+        this.banners = res.data.banner.list;
+        this.recommends = res.data.recommend.list;
+      });
+    },
+    // 2.请求商品数据
+    getHomeGoods(type) {
+      const page = this.goods[type].page + 1;
+      getHomeGoods(type, page).then(res => {
+        this.goods[type].list.push(...res.data.list);
+        this.goods[type].page += 1;
+      });
+    }
   }
 };
 </script>
@@ -120,5 +139,6 @@ export default {
 .tab-control {
   position: sticky;
   top: 44px;
+  z-index: 9;
 }
 </style>
