@@ -3,51 +3,16 @@
     <NavBar class="home-nav">
       <div slot="center">购物街</div>
     </NavBar>
-    <HomeSwiper :banners="banners"></HomeSwiper>
-    <RecommendView :recommends="recommends"></RecommendView>
-    <FeatureView></FeatureView>
-    <TabControl class="tab-control"
-                :titles="['流行', '新款', '精选']"
-                @tabClick="tabClick"></TabControl>
 
-    <GoodsList :goods="showDiffGoods"></GoodsList>
-    <ul>
-      <li>1</li>
-      <li>2</li>
-      <li>3</li>
-      <li>4</li>
-      <li>5</li>
-      <li>6</li>
-      <li>7</li>
-      <li>8</li>
-      <li>9</li>
-      <li>10</li>
-      <li>11</li>
-      <li>12</li>
-      <li>13</li>
-      <li>14</li>
-      <li>15</li>
-      <li>16</li>
-      <li>17</li>
-      <li>18</li>
-      <li>19</li>
-      <li>20</li>
-      <li>21</li>
-      <li>22</li>
-      <li>23</li>
-      <li>24</li>
-      <li>25</li>
-      <li>26</li>
-      <li>27</li>
-      <li>28</li>
-      <li>29</li>
-      <li>30</li>
-      <li>31</li>
-      <li>32</li>
-      <li>33</li>
-    </ul>
+    <Scroll class="content">
+      <HomeSwiper :banners="banners"></HomeSwiper>
+      <RecommendView :recommends="recommends"></RecommendView>
+      <FeatureView></FeatureView>
+      <TabControl class="tab-control" :titles="['流行', '新款', '精选']" @tabClick="tabClick"></TabControl>
 
-    <h2>首页</h2>
+      <GoodsList :goods="showDiffGoods"></GoodsList>
+    </Scroll>
+
   </div>
 </template>
 
@@ -55,6 +20,7 @@
 import NavBar from "components/common/navbar/NavBar";
 import TabControl from "components/content/tabControl/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
+import Scroll from "components/common/scroll/Scroll";
 
 import HomeSwiper from "./childComps/HomeSwiper";
 import RecommendView from "./childComps/RecommendView";
@@ -68,6 +34,7 @@ export default {
     NavBar,
     TabControl,
     GoodsList,
+    Scroll,
     HomeSwiper,
     RecommendView,
     FeatureView
@@ -81,12 +48,12 @@ export default {
         new: { page: 0, list: [] },
         sell: { page: 0, list: [] }
       },
-      currentType: 'pop'
+      currentType: "pop"
     };
   },
   computed: {
     showDiffGoods() {
-      return this.goods[this.currentType].list
+      return this.goods[this.currentType].list;
     }
   },
   created() {
@@ -101,16 +68,15 @@ export default {
   methods: {
     /*
      *事件监听相关
-    */
+     */
     tabClick(index) {
-      const goodType = ['pop', 'new', 'sell']
-      this.currentType = goodType[index]
+      const goodType = ["pop", "new", "sell"];
+      this.currentType = goodType[index];
     },
-
 
     /*
      * 网络请求相关
-    */
+     */
     // 1.请求多个数据
     getHomeMultidata() {
       getHomeMultidata().then(res => {
@@ -136,6 +102,8 @@ export default {
 <style scoped>
 #home {
   padding-top: 44px;
+  height: 100vh;
+  position: relative;
 }
 
 .home-nav {
@@ -154,4 +122,20 @@ export default {
   top: 44px;
   z-index: 9;
 }
+
+.content {
+  overflow: hidden;
+
+  position: absolute;
+  top: 44px;
+  bottom: 49px;
+  left: 0;
+  right: 0;
+}
+
+/* .content {
+  height: calc(100% - 93px);
+  overflow: hidden;
+  margin-top: 44px;
+} */
 </style>
