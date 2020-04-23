@@ -77,15 +77,26 @@ export default {
   mounted() {
     //监听item中图片加载完成
     // 并刷新BSScroll
+    const refresh = this.debounce(this.$refs.scroll.refresh, 500)
     this.$bus.$on("itemImageLoad", () => {
-      this.$refs.scroll && this.$refs.scroll.refresh();
-      // this.$refs.scroll.refresh();
+      refresh()
     });
   },
   methods: {
     /*
      *事件监听相关
      */
+    debounce(func, delay=100) {
+      let timer = null
+
+      return function (...args) {
+        if (timer)
+          clearTimeout(timer)
+        timer = setTimeout(() => {
+          func.apply(this, args)
+        }, delay);
+      }
+    },
     tabClick(index) {
       const goodType = ["pop", "new", "sell"];
       this.currentType = goodType[index];
