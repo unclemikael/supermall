@@ -9,8 +9,6 @@
       ref="scroll"
       :probeType="3"
       @position="contenetScroll"
-      :pullUpLoad="true"
-      @pullingUp="LoadMore"
     >
       <HomeSwiper :banners="banners"></HomeSwiper>
       <RecommendView :recommends="recommends"></RecommendView>
@@ -75,6 +73,12 @@ export default {
     this.getHomeGoods("pop");
     this.getHomeGoods("new");
     this.getHomeGoods("sell");
+
+    //监听item中图片加载完成
+    // 并刷新BSScroll
+    this.$bus.$on('itemImageLoad', () => {
+      this.$refs.scroll.refresh()
+    })
   },
   methods: {
     /*
@@ -90,9 +94,8 @@ export default {
     contenetScroll(position) {
       this.isShowBackTop = -position.y > 1000;
     },
-    LoadMore() {
-       this.getHomeGoods(this.currentType);
-    },
+
+
     /*
      * 网络请求相关
      */
