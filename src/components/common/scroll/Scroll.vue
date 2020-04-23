@@ -11,20 +11,29 @@ import BScroll from "better-scroll";
 
 export default {
   name: "Scroll",
+  props: {
+    probeType: {
+      type: Number,
+      default: 0
+    }
+  },
   data() {
     return {
       scroll: null
     };
   },
   mounted() {
+    // 创建
     this.scroll = new BScroll(this.$refs.wrapper, {
       scrollY: true,
-      probeType: 3,
+      click: true,
+      probeType: this.probeType,
       pullUpLoad: true
     });
-
+    // 监听
     this.scroll.on("scroll", position => {
-      console.log(position);
+      // console.log(position);
+      this.$emit('position', position)
     });
 
     this.scroll.on("pullingUp", () => {
