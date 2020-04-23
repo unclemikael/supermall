@@ -4,7 +4,14 @@
       <div slot="center">购物街</div>
     </NavBar>
 
-    <Scroll class="content" ref="scroll" :probeType="3" @position="contenetScroll">
+    <Scroll
+      class="content"
+      ref="scroll"
+      :probeType="3"
+      @position="contenetScroll"
+      :pullUpLoad="true"
+      @pullingUp="LoadMore"
+    >
       <HomeSwiper :banners="banners"></HomeSwiper>
       <RecommendView :recommends="recommends"></RecommendView>
       <FeatureView></FeatureView>
@@ -22,7 +29,7 @@ import NavBar from "components/common/navbar/NavBar";
 import TabControl from "components/content/tabControl/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
 import Scroll from "components/common/scroll/Scroll";
-import Backtop from 'components/content/backTop/BackTop'
+import Backtop from "components/content/backTop/BackTop";
 
 import HomeSwiper from "./childComps/HomeSwiper";
 import RecommendView from "./childComps/RecommendView";
@@ -78,14 +85,14 @@ export default {
       this.currentType = goodType[index];
     },
     backClick() {
-      this.$refs.scroll.scrollTo()
-
+      this.$refs.scroll.scrollTo();
     },
     contenetScroll(position) {
-      this.isShowBackTop = (-position.y) > 1000
+      this.isShowBackTop = -position.y > 1000;
     },
-
-
+    LoadMore() {
+       this.getHomeGoods(this.currentType);
+    },
     /*
      * 网络请求相关
      */
