@@ -15,6 +15,10 @@ export default {
     probeType: {
       type: Number,
       default: 0
+    },
+    pullUpLoad: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -28,25 +32,32 @@ export default {
       scrollY: true,
       click: true,
       probeType: this.probeType,
+      pullUpLoad: this.pullUpLoad
     });
     // 监听滚动位置
-    this.scroll.on("scroll", position => {
-      this.$emit('position', position)
-    });
-    // 监听上拉加载
+    if (this.probeType == 2 || this.probeType == 3) {
+      this.scroll.on("scroll", position => {
+        this.$emit("position", position);
+      });
+    }
+    // 监听scroll滚动到底部
+    if (this.pullUpLoad) {
+      this.scroll.on('pullingUp', () => {
+        this.$emit("pullingUp")
+      })
+    }
 
-
-    this.scroll.scrollTo(0,0)
+    this.scroll.scrollTo(0, 0);
   },
   methods: {
-    scrollTo(x=0, y=0, time=1000) {
-      this.scroll.scrollTo && this.scroll.scrollTo(x, y, time)
+    scrollTo(x = 0, y = 0, time = 1000) {
+      this.scroll.scrollTo && this.scroll.scrollTo(x, y, time);
     },
     finishPullUp() {
-      this.scroll.finishPullUp()
+      this.scroll.finishPullUp();
     },
     refresh() {
-      this.scroll && this.scroll.refresh()
+      this.scroll && this.scroll.refresh();
     }
   }
 };

@@ -9,6 +9,8 @@
       ref="scroll"
       :probeType="3"
       @position="contenetScroll"
+      :pullUpLoad="true"
+      @pullingUp="loadMore"
       >
       <HomeSwiper :banners="banners"></HomeSwiper>
       <RecommendView :recommends="recommends"></RecommendView>
@@ -34,6 +36,7 @@ import RecommendView from "./childComps/RecommendView";
 import FeatureView from "./childComps/FeatureView";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
+import {debounce} from "common/utils"
 
 export default {
   name: "Home",
@@ -77,7 +80,7 @@ export default {
   mounted() {
     //监听item中图片加载完成
     // 并刷新BSScroll
-    const refresh = this.debounce(this.$refs.scroll.refresh, 500)
+    const refresh = debounce(this.$refs.scroll.refresh, 500)
     this.$bus.$on("itemImageLoad", () => {
       refresh()
     });
@@ -86,17 +89,6 @@ export default {
     /*
      *事件监听相关
      */
-    debounce(func, delay=100) {
-      let timer = null
-
-      return function (...args) {
-        if (timer)
-          clearTimeout(timer)
-        timer = setTimeout(() => {
-          func.apply(this, args)
-        }, delay);
-      }
-    },
     tabClick(index) {
       const goodType = ["pop", "new", "sell"];
       this.currentType = goodType[index];
@@ -107,7 +99,9 @@ export default {
     contenetScroll(position) {
       this.isShowBackTop = -position.y > 1000;
     },
-
+    loadMore() {
+      this.getHomeGoods(this.currentType)
+    },
 
     /*
      * 网络请求相关
@@ -128,7 +122,10 @@ export default {
       getHomeGoods(type, page).then(res => {
         this.goods[type].list.push(...res.data.list);
         this.goods[type].page += 1;
-      });
+        return res
+      }).then(res => {
+        this.$refs.scroll.finishPullUp()
+      })
     }
   }
 };
