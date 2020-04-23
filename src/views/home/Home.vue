@@ -9,7 +9,7 @@
       ref="scroll"
       :probeType="3"
       @position="contenetScroll"
-    >
+      >
       <HomeSwiper :banners="banners"></HomeSwiper>
       <RecommendView :recommends="recommends"></RecommendView>
       <FeatureView></FeatureView>
@@ -73,12 +73,14 @@ export default {
     this.getHomeGoods("pop");
     this.getHomeGoods("new");
     this.getHomeGoods("sell");
-
+  },
+  mounted() {
     //监听item中图片加载完成
     // 并刷新BSScroll
-    this.$bus.$on('itemImageLoad', () => {
-      this.$refs.scroll.refresh()
-    })
+    this.$bus.$on("itemImageLoad", () => {
+      this.$refs.scroll && this.$refs.scroll.refresh();
+      // this.$refs.scroll.refresh();
+    });
   },
   methods: {
     /*

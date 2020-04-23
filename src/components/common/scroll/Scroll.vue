@@ -40,13 +40,13 @@ export default {
   },
   methods: {
     scrollTo(x=0, y=0, time=1000) {
-      this.scroll.scrollTo(x, y, time)
+      this.scroll.scrollTo && this.scroll.scrollTo(x, y, time)
     },
     finishPullUp() {
       this.scroll.finishPullUp()
     },
     refresh() {
-      this.scroll.refresh()
+      this.scroll && this.scroll.refresh()
     }
   }
 };
