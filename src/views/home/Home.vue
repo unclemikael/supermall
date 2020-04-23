@@ -4,7 +4,7 @@
       <div slot="center">购物街</div>
     </NavBar>
 
-    <Scroll class="content">
+    <Scroll class="content" ref="scroll">
       <HomeSwiper :banners="banners"></HomeSwiper>
       <RecommendView :recommends="recommends"></RecommendView>
       <FeatureView></FeatureView>
@@ -13,6 +13,7 @@
       <GoodsList :goods="showDiffGoods"></GoodsList>
     </Scroll>
 
+    <Backtop @click.native="backClick"></Backtop>
   </div>
 </template>
 
@@ -21,6 +22,7 @@ import NavBar from "components/common/navbar/NavBar";
 import TabControl from "components/content/tabControl/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
 import Scroll from "components/common/scroll/Scroll";
+import Backtop from 'components/content/backTop/BackTop'
 
 import HomeSwiper from "./childComps/HomeSwiper";
 import RecommendView from "./childComps/RecommendView";
@@ -35,6 +37,7 @@ export default {
     TabControl,
     GoodsList,
     Scroll,
+    Backtop,
     HomeSwiper,
     RecommendView,
     FeatureView
@@ -73,6 +76,12 @@ export default {
       const goodType = ["pop", "new", "sell"];
       this.currentType = goodType[index];
     },
+    backClick() {
+      this.$refs.scroll.scrollTo()
+
+    },
+
+
 
     /*
      * 网络请求相关

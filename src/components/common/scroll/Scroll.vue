@@ -12,23 +12,32 @@ import BScroll from "better-scroll";
 export default {
   name: "Scroll",
   data() {
-    return {};
+    return {
+      scroll: null
+    };
   },
   mounted() {
-    const bscroll = new BScroll(this.$refs.wrapper, {
+    this.scroll = new BScroll(this.$refs.wrapper, {
       scrollY: true,
       probeType: 3,
       pullUpLoad: true
     });
 
-    bscroll.on("scroll", position => {
+    this.scroll.on("scroll", position => {
       console.log(position);
     });
 
-    bscroll.on("pullingUp", () => {
+    this.scroll.on("pullingUp", () => {
       console.log("上拉加载");
-      bscroll.finishPullUp();
+      this.scroll.finishPullUp();
     });
+
+    this.scroll.scrollTo(0,0)
+  },
+  methods: {
+    scrollTo(x=0, y=0, time=1000) {
+      this.scroll.scrollTo(x, y, time)
+    }
   }
 };
 </script>
