@@ -31,6 +31,7 @@ export default {
     this.scroll = new BScroll(this.$refs.wrapper, {
       scrollY: true,
       click: true,
+      mouseWheel: true,
       probeType: this.probeType,
       pullUpLoad: this.pullUpLoad
     });
