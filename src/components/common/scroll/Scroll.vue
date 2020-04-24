@@ -47,7 +47,6 @@ export default {
       })
     }
 
-    this.scroll.scrollTo(0, 0);
   },
   methods: {
     scrollTo(x = 0, y = 0, time = 1000) {
@@ -58,6 +57,9 @@ export default {
     },
     refresh() {
       this.scroll && this.scroll.refresh();
+    },
+    getScrollY() {
+      return this.scroll ? this.scroll.y : 0;
     }
   }
 };
