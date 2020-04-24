@@ -8,6 +8,7 @@
       <DetailGoodsInfo :detailInfo="detailInfo" @imageLoad="imgeLoaded"></DetailGoodsInfo>
 
       <DetailParamInfo :paramInfo="paramInfo"></DetailParamInfo>
+      <DetailCommentInfo :commentInfo="commentInfo"></DetailCommentInfo>
     </Scroll>
   </div>
 </template>
@@ -19,6 +20,7 @@ import DetailBaseInfo from "./childComps/DetailBaseInfo";
 import DetailShopInfo from "./childComps/DetailShopInfo";
 import DetailGoodsInfo from "./childComps/DetailGoodsInfo";
 import DetailParamInfo from "./childComps/DetailParamInfo";
+import DetailCommentInfo from "./childComps/DetailCommentInfo";
 
 import Scroll from "components/common/scroll/Scroll";
 
@@ -34,32 +36,38 @@ export default {
       shop: {},
       detailInfo: {},
       paramInfo: {},
+      commentInfo: {}
     };
   },
   created() {
     this.iid = this.$route.params.iid;
     getDetail(this.iid).then(res => {
       console.log(res.result);
-
+      // 1.获取数据
       const data = res.result;
-      // 1.顶部轮播数据
+      // 2.顶部轮播数据
       this.topImages = data.itemInfo.topImages;
 
-      // 2.获取商品信息
+      // 3.获取商品信息
       this.goods = new Goods(
         data.itemInfo,
         data.columns,
         data.shopInfo.services
       );
 
-      // 3.创建店铺信息
+      // 4.创建店铺信息
       this.shop = new Shop(data.shopInfo);
 
-      // 4.保存商品的详情数据
+      // 5.保存商品的详情数据
       this.detailInfo = data.detailInfo;
 
-      // 5.获取参数的信息
+      // 6.获取参数的信息
       this.paramInfo = new GoodsParam(data.itemParams)
+
+      // 7.取出评论数据
+      if (data.rate.cRate !== 0) {
+        this.commentInfo = data.rate.list[0]
+      }
 
     })
   },
@@ -75,6 +83,7 @@ export default {
     DetailShopInfo,
     DetailGoodsInfo,
     DetailParamInfo,
+    DetailCommentInfo,
     Scroll
   }
 };
