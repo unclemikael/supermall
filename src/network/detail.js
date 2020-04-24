@@ -37,7 +37,9 @@ export class Shop {
 }
 
 export class GoodsParam {
-  constructor(info, rule) {
+  constructor(itemParams) {
+    const info = itemParams.info
+    const rule = itemParams.rule
     this.image = info.images ? info.images[0] : "";
     this.infos = info.set;
     this.sizes = rule.tables;
