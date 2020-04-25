@@ -97,6 +97,7 @@ export default {
       this.themeTopYs.push(this.$refs.params.$el.offsetTop - this.$refs.swiper.$el.offsetTop)
       this.themeTopYs.push(this.$refs.comment.$el.offsetTop - this.$refs.swiper.$el.offsetTop)
       this.themeTopYs.push(this.$refs.recommend.$el.offsetTop - this.$refs.swiper.$el.offsetTop)
+      this.themeTopYs.push(Number.MAX_VALUE)
 
       console.log('ThemeTopY Refresh')
     }, 500)
@@ -133,8 +134,8 @@ export default {
       // 2.positionY和主题中进行对比
       let index = this.themeTopYs.length - 1;
       for(let i=0; i < index; i++) {
-        if (y < this.themeTopYs[0] || i < index && y < this.themeTopYs[i+1] && y >= this.themeTopYs[i]
-         || i == index && y > this.themeTopYs[i]) {
+        if (y < this.themeTopYs[0] ||
+            i < index && y < this.themeTopYs[i+1] && y >= this.themeTopYs[i]) {
 
           index = i;
           break;
