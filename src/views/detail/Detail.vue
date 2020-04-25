@@ -1,15 +1,15 @@
 <template>
   <div id="detail">
-    <DetailNavBar class="detail-nav"></DetailNavBar>
+    <DetailNavBar class="detail-nav" @titleClick="titleClick" ref="navBar"></DetailNavBar>
     <Scroll class="content" ref="scroll">
-      <DetailSwiper :topImages="topImages"></DetailSwiper>
+      <DetailSwiper :topImages="topImages" ref="swiper"></DetailSwiper>
       <DetailBaseInfo :goods="goods"></DetailBaseInfo>
       <DetailShopInfo :shop="shop"></DetailShopInfo>
       <DetailGoodsInfo :detailInfo="detailInfo" @imageLoad="imgeLoaded"></DetailGoodsInfo>
 
-      <DetailParamInfo :paramInfo="paramInfo"></DetailParamInfo>
-      <DetailCommentInfo :commentInfo="commentInfo"></DetailCommentInfo>
-      <GoodsList :goods="recommends"></GoodsList>
+      <DetailParamInfo :paramInfo="paramInfo" ref="params"></DetailParamInfo>
+      <DetailCommentInfo :commentInfo="commentInfo" ref="comment"></DetailCommentInfo>
+      <GoodsList :goods="recommends" ref="recommend"></GoodsList>
     </Scroll>
   </div>
 </template>
@@ -27,6 +27,7 @@ import Scroll from "components/common/scroll/Scroll";
 import GoodsList from "components/content/goods/GoodsList"
 
 import { getDetail, getRecommend, Goods, Shop, GoodsParam } from "network/detail";
+import { debounce } from "common/utils";
 import { itemListenerMixin } from "common/mixin"
 
 export default {
@@ -40,7 +41,9 @@ export default {
       detailInfo: {},
       paramInfo: {},
       commentInfo: {},
-      recommends: []
+      recommends: [],
+      themeTopYs: [],
+      debouce: null
     };
   },
   created() {
@@ -81,6 +84,18 @@ export default {
       // console.log(res);
       this.recommends = res.data.list
     })
+
+    // 给getThemeTopY赋值
+    this.getThemeTopY = debounce(() => {
+      this.themeTopYs = []
+      this.themeTopYs.push(this.$refs.swiper.$el.offsetTop)
+      this.themeTopYs.push(this.$refs.params.$el.offsetTop - this.$refs.swiper.$el.offsetTop)
+      this.themeTopYs.push(this.$refs.comment.$el.offsetTop - this.$refs.swiper.$el.offsetTop)
+      this.themeTopYs.push(this.$refs.recommend.$el.offsetTop - this.$refs.swiper.$el.offsetTop)
+
+      console.log('ThemeTopY Refresh')
+    }, 500)
+
   },
   mounted() {
     // const refresh = debounce(this.$refs.scroll.refresh, 500);
@@ -97,7 +112,13 @@ export default {
   methods: {
     imgeLoaded() {
       // this.$refs.scroll.refresh()
+      //scroll高度刷新
       this.refresh()
+      //ThemeTopY高度刷新
+      this.getThemeTopY()
+    },
+    titleClick(index) {
+      this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 100);
     }
   },
   components: {

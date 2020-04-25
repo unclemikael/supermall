@@ -13,7 +13,7 @@ export const itemListenerMixin = {
     this.itemImgListemer = () => {
       this.refresh();
 
-      console.log(this.$el.id, 'scrollRefresh');
+      console.log('#' + this.$el.id, 'Scroll Refresh Request');
     }
 
     this.$bus.$on("itemImageLoad", this.itemImgListemer)
