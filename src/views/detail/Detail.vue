@@ -1,7 +1,11 @@
 <template>
   <div id="detail">
     <DetailNavBar class="detail-nav" @titleClick="titleClick" ref="navBar"></DetailNavBar>
-    <Scroll class="content" ref="scroll">
+    <Scroll class="content"
+            ref="scroll"
+            :probeType="3"
+            @position="contentScroll"
+    >
       <DetailSwiper :topImages="topImages" ref="swiper"></DetailSwiper>
       <DetailBaseInfo :goods="goods"></DetailBaseInfo>
       <DetailShopInfo :shop="shop"></DetailShopInfo>
@@ -43,7 +47,8 @@ export default {
       commentInfo: {},
       recommends: [],
       themeTopYs: [],
-      debouce: null
+      debouce: null,
+      currentIndex: 0
     };
   },
   created() {
@@ -119,6 +124,28 @@ export default {
     },
     titleClick(index) {
       this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 100);
+    },
+    // 更新currentIndex
+    contentScroll(position) {
+      // 1.获取y值
+      let y = Math.abs(position.y)
+
+      // 2.positionY和主题中进行对比
+      let index = this.themeTopYs.length - 1;
+      for(let i=0; i < index; i++) {
+        if (y < this.themeTopYs[0] || i < index && y < this.themeTopYs[i+1] && y >= this.themeTopYs[i]
+         || i == index && y > this.themeTopYs[i]) {
+
+          index = i;
+          break;
+        }
+      }
+      // 发生改变时修改currentIndex
+      if (index != this.currentIndex) {
+        this.currentIndex = index
+        this.$refs.navBar.currentIndex = this.currentIndex
+      }
+
     }
   },
   components: {
@@ -147,6 +174,8 @@ export default {
 .content {
   /* 空格不能少 */
   height: calc(100% - 44px);
+  top:44px;
+  position: absolute;
 }
 
 .detail-nav {
