@@ -49,9 +49,11 @@ import FeatureView from "./childComps/FeatureView";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
 import { debounce } from "common/utils";
+import { itemListenerMixin } from "common/mixin"
 
 export default {
   name: "Home",
+  mixins: [itemListenerMixin],
   components: {
     NavBar,
     TabControl,
@@ -89,7 +91,10 @@ export default {
     this.$refs.scroll.refresh()
   },
   deactivated() {
+    // 1.保存Y值
     this.saveY = this.$refs.scroll.getScrollY()
+    // 2.取消全局事件监听
+    // this.$bus.$off('itemImgListener', this.itemImgListener)
   },
   created() {
     // 1.请求多个数据
@@ -103,10 +108,12 @@ export default {
   mounted() {
     //监听item中图片加载完成
     // 并刷新BSScroll
-    const refresh = debounce(this.$refs.scroll.refresh, 500);
-    this.$bus.$on("itemImageLoad", () => {
-      refresh();
-    });
+    // const refresh = debounce(this.$refs.scroll.refresh, 500);
+    // this.itemImgListener = () => {
+    //   refresh();
+    // }
+    // //             $emit事件                执行方法
+    // this.$bus.$on("itemImageLoad", this.itemImgListener);
   },
   methods: {
     /*

@@ -27,6 +27,7 @@ import Scroll from "components/common/scroll/Scroll";
 import GoodsList from "components/content/goods/GoodsList"
 
 import { getDetail, getRecommend, Goods, Shop, GoodsParam } from "network/detail";
+import { itemListenerMixin } from "common/mixin"
 
 export default {
   name: "Detail",
@@ -81,6 +82,18 @@ export default {
       this.recommends = res.data.list
     })
   },
+  mounted() {
+    // const refresh = debounce(this.$refs.scroll.refresh, 500);
+    // this.itemImgListemer =  () => {
+    //   console.log('detail refresh');
+    //   refresh();
+    // }
+
+    // this.$bus.$on("itemImageLoad", itemImgListemer)
+  },
+  destroyed() {
+    // this.$bus.$off('itemImgLoad', this.itemImgListemer)
+  },
   methods: {
     imgeLoaded() {
       this.$refs.scroll.refresh()
@@ -96,7 +109,8 @@ export default {
     DetailCommentInfo,
     Scroll,
     GoodsList
-  }
+  },
+  mixins: [itemListenerMixin]
 };
 </script>
 

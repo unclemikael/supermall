@@ -38,7 +38,7 @@ export default {
     imgLoad() {
       // 判断一下是否所有图片都获取完成,防抖
       if (++this.counter === this.imagesLength) {
-        this.$emit("imgLoad");
+        this.$emit("imageLoad");
       }
     }
   },
