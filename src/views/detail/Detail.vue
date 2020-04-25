@@ -9,6 +9,7 @@
 
       <DetailParamInfo :paramInfo="paramInfo"></DetailParamInfo>
       <DetailCommentInfo :commentInfo="commentInfo"></DetailCommentInfo>
+      <GoodsList :goods="recommends"></GoodsList>
     </Scroll>
   </div>
 </template>
@@ -23,8 +24,9 @@ import DetailParamInfo from "./childComps/DetailParamInfo";
 import DetailCommentInfo from "./childComps/DetailCommentInfo";
 
 import Scroll from "components/common/scroll/Scroll";
+import GoodsList from "components/content/goods/GoodsList"
 
-import { getDetail, Goods, Shop, GoodsParam } from "network/detail";
+import { getDetail, getRecommend, Goods, Shop, GoodsParam } from "network/detail";
 
 export default {
   name: "Detail",
@@ -36,13 +38,15 @@ export default {
       shop: {},
       detailInfo: {},
       paramInfo: {},
-      commentInfo: {}
+      commentInfo: {},
+      recommends: []
     };
   },
   created() {
     this.iid = this.$route.params.iid;
+    // 请求详情数据
     getDetail(this.iid).then(res => {
-      console.log(res.result);
+      // console.log(res.result);
       // 1.获取数据
       const data = res.result;
       // 2.顶部轮播数据
@@ -70,6 +74,12 @@ export default {
       }
 
     })
+
+    // 请求推荐数据
+    getRecommend().then(res => {
+      // console.log(res);
+      this.recommends = res.data.list
+    })
   },
   methods: {
     imgeLoaded() {
@@ -84,7 +94,8 @@ export default {
     DetailGoodsInfo,
     DetailParamInfo,
     DetailCommentInfo,
-    Scroll
+    Scroll,
+    GoodsList
   }
 };
 </script>
