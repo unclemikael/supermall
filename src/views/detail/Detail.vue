@@ -166,7 +166,8 @@ export default {
       product.iid = this.iid
 
       // 2.添加到购物车里
-      this.$store.commit('addCart', product)
+      // this.$store.commit('addCart', product)
+      this.$store.dispatch('addCart', product)
     }
   },
   components: {
