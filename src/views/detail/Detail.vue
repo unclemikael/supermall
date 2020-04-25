@@ -16,7 +16,7 @@
       <GoodsList :goods="recommends" ref="recommend"></GoodsList>
     </Scroll>
 
-    <DetailBottomBar></DetailBottomBar>
+    <DetailBottomBar @addCart="addToCart"></DetailBottomBar>
 
     <BackTop @click.native="backClick" v-show="isShowBackTop"></BackTop>
   </div>
@@ -155,6 +155,18 @@ export default {
 
       // 判断BackTop是否显示
       this.isShowBackTop = y > 1000;
+    },
+    addToCart() {
+      // 1.获取购物车需要展示的信息
+      const product = {}
+      product.image = this.topImages[0]
+      product.title = this.goods.title
+      product.desc = this.goods.desc
+      product.price = this.goods.realPrice
+      product.iid = this.iid
+
+      // 2.添加到购物车里
+      this.$store.commit('addCart', product)
     }
   },
   components: {
