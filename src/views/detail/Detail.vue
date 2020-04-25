@@ -15,7 +15,10 @@
       <DetailCommentInfo :commentInfo="commentInfo" ref="comment"></DetailCommentInfo>
       <GoodsList :goods="recommends" ref="recommend"></GoodsList>
     </Scroll>
+
     <DetailBottomBar></DetailBottomBar>
+
+    <BackTop @click.native="backClick" v-show="isShowBackTop"></BackTop>
   </div>
 </template>
 
@@ -34,7 +37,7 @@ import GoodsList from "components/content/goods/GoodsList"
 
 import { getDetail, getRecommend, Goods, Shop, GoodsParam } from "network/detail";
 import { debounce } from "common/utils";
-import { itemListenerMixin } from "common/mixin"
+import { itemListenerMixin, backTopMixin } from "common/mixin"
 
 export default {
   name: "Detail",
@@ -53,6 +56,7 @@ export default {
       currentIndex: 0
     };
   },
+  mixins: [backTopMixin],
   created() {
     this.iid = this.$route.params.iid;
     // 请求详情数据
@@ -149,6 +153,8 @@ export default {
         this.$refs.navBar.currentIndex = this.currentIndex
       }
 
+      // 判断BackTop是否显示
+      this.isShowBackTop = y > 1000;
     }
   },
   components: {
@@ -163,7 +169,7 @@ export default {
     Scroll,
     GoodsList
   },
-  mixins: [itemListenerMixin]
+  mixins: [itemListenerMixin, backTopMixin]
 };
 </script>
 

@@ -27,3 +27,21 @@ export const itemListenerMixin = {
     this.$bus.$off('itemImageLoad', this.itemImgListener)
   },
 }
+
+import BackTop from "components/content/backTop/BackTop";
+export const backTopMixin = {
+  data() {
+    return {
+      isShowBackTop: false
+    }
+  },
+  methods: {
+    // 返回（0, 0）
+    backClick() {
+      this.$refs.scroll.scrollTo();
+    },
+  },
+  components: {
+    BackTop
+  }
+}

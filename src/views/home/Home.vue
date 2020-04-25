@@ -32,7 +32,7 @@
       <GoodsList :goods="showDiffGoods"></GoodsList>
     </Scroll>
 
-    <Backtop @click.native="backClick" v-show="isShowBackTop"></Backtop>
+    <BackTop @click.native="backClick" v-show="isShowBackTop"></BackTop>
   </div>
 </template>
 
@@ -49,17 +49,16 @@ import FeatureView from "./childComps/FeatureView";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
 import { debounce } from "common/utils";
-import { itemListenerMixin } from "common/mixin"
+import { itemListenerMixin, backTopMixin } from "common/mixin"
 
 export default {
   name: "Home",
-  mixins: [itemListenerMixin],
+  mixins: [itemListenerMixin, backTopMixin],
   components: {
     NavBar,
     TabControl,
     GoodsList,
     Scroll,
-    Backtop,
     HomeSwiper,
     RecommendView,
     FeatureView
@@ -74,7 +73,6 @@ export default {
         sell: { page: 0, list: [] }
       },
       currentType: "pop",
-      isShowBackTop: false,
       tabOffsetTop: 0,
       isTabFixed: false,
       saveY: 0
@@ -125,9 +123,9 @@ export default {
       this.$refs.tabControl1.currentIndex = index
       this.$refs.tabControl2.currentIndex = index
     },
-    backClick() {
-      this.$refs.scroll.scrollTo();
-    },
+    // backClick() {
+    //   this.$refs.scroll.scrollTo();
+    // },
     contenetScroll(position) {
       // 1.判断BackTop是否显示
       this.isShowBackTop = -position.y > 1000;
