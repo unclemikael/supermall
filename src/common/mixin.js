@@ -3,13 +3,15 @@ import { debounce } from "./utils"
 export const itemListenerMixin = {
   data() {
     return {
-      itemImgListemer: null
+      itemImgListemer: null,
+      refresh: null
     }
   },
   mounted() {
-    const refresh = debounce(this.$refs.scroll.refresh, 500);
+    this.refresh = debounce(this.$refs.scroll.refresh, 500);
+
     this.itemImgListemer = () => {
-      refresh();
+      this.refresh();
 
       console.log(this.$el.id, 'scrollRefresh');
     }

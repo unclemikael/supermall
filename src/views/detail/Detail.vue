@@ -96,7 +96,8 @@ export default {
   },
   methods: {
     imgeLoaded() {
-      this.$refs.scroll.refresh()
+      // this.$refs.scroll.refresh()
+      this.refresh()
     }
   },
   components: {
