@@ -15,6 +15,7 @@
       <DetailCommentInfo :commentInfo="commentInfo" ref="comment"></DetailCommentInfo>
       <GoodsList :goods="recommends" ref="recommend"></GoodsList>
     </Scroll>
+    <DetailBottomBar></DetailBottomBar>
   </div>
 </template>
 
@@ -26,6 +27,7 @@ import DetailShopInfo from "./childComps/DetailShopInfo";
 import DetailGoodsInfo from "./childComps/DetailGoodsInfo";
 import DetailParamInfo from "./childComps/DetailParamInfo";
 import DetailCommentInfo from "./childComps/DetailCommentInfo";
+import DetailBottomBar from "./childComps/DetailBottomBar"
 
 import Scroll from "components/common/scroll/Scroll";
 import GoodsList from "components/content/goods/GoodsList"
@@ -157,6 +159,7 @@ export default {
     DetailGoodsInfo,
     DetailParamInfo,
     DetailCommentInfo,
+    DetailBottomBar,
     Scroll,
     GoodsList
   },
@@ -174,7 +177,7 @@ export default {
 
 .content {
   /* 空格不能少 */
-  height: calc(100% - 44px);
+  height: calc(100% - 44px - 58px);
   top:44px;
   position: absolute;
 }
