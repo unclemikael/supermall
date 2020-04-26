@@ -1,7 +1,7 @@
 <template>
   <div id="CartBottomBar" class="bottom-bar">
     <div class="check-content">
-      <CheckButton class="check-buttom" :value="isSelectAll"></CheckButton>
+      <CheckButton class="check-buttom" :value="isSelectAll" @click.native="checkClick"></CheckButton>
       <span>全选</span>
     </div>
 
@@ -20,6 +20,24 @@ export default {
   name: "CartBottomBar",
   data() {
     return {};
+  },
+  methods: {
+    checkClick() {
+      // if (this.isSelectAll) {
+      //   this.cartList.forEach(cartElement => {
+      //     cartElement.checked = false;
+      //   });
+      // } else {
+      //   this.cartList.forEach(cartElement => {
+      //     cartElement.checked = true;
+      //   });
+      // }
+
+      const isSelectAll = this.isSelectAll;
+      this.cartList.forEach(cartElement => {
+        cartElement.checked = !isSelectAll;
+      });
+    }
   },
   computed: {
     ...mapGetters(["cartList"]),
@@ -42,8 +60,8 @@ export default {
       }).length;
     },
     isSelectAll() {
-      if (this.cartList.length == 0) return false
-      return !this.cartList.find(item => !item.checked)
+      if (this.cartList.length == 0) return false;
+      return !this.cartList.find(item => !item.checked);
     }
   },
   components: {
@@ -87,7 +105,7 @@ export default {
 .calculate {
   width: 90px;
   background-color: red;
-  color:#fff;
+  color: #fff;
   text-align: center;
 }
 </style>
