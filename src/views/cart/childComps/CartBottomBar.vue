@@ -1,7 +1,7 @@
 <template>
   <div id="CartBottomBar" class="bottom-bar">
     <div class="check-content">
-      <CheckButton class="check-buttom"></CheckButton>
+      <CheckButton class="check-buttom" :value="isSelectAll"></CheckButton>
       <span>全选</span>
     </div>
 
@@ -40,6 +40,10 @@ export default {
       return this.cartList.filter(item => {
         return item.checked;
       }).length;
+    },
+    isSelectAll() {
+      if (this.cartList.length == 0) return false
+      return !this.cartList.find(item => !item.checked)
     }
   },
   components: {
